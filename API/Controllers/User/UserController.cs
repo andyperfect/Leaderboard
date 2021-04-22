@@ -20,7 +20,7 @@ namespace API.Controllers.User
 
 
         [HttpPost, Route("")]
-        public ActionResult Create([FromBody]CreateModel model)
+        public ActionResult Create([FromBody] CreateModel model)
         {
             Request.AuthorizeSiteAdministrator();
             var user = _userService.CreateUser(model.Email, model.Username, model.Password);
@@ -32,6 +32,13 @@ namespace API.Controllers.User
         {
             var user = _userService.GetUserById(id);
             return new OkObjectResult(user);
+        }
+
+        [HttpPost, Route("{login}")]
+        public ActionResult Login([FromBody] LoginModel model)
+        {
+            var accessToken = _userService.GetAccessToken(model.Username, model.Password);
+            return new OkObjectResult(new {accessToken});
         }
     }
 }

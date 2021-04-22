@@ -46,35 +46,82 @@ namespace Services.Repositories
             conn.Open();
             var command = conn.CreateCommand();
 
-            command.CommandText =
-                @"SELECT 
-	                u.ID, 
-	                u.email, 
-	                u.username, 
-	                u.dateCreated,
-	                usr.type AS siteRoleType,
-	                ugr.gameId AS gameRoleGameId,
-	                ugr.type AS gameRoleType
-                FROM User u
-                LEFT JOIN UserSiteRole usr ON usr.userId = u.ID
-                LEFT JOIN UserGameRole ugr ON ugr.userId = u.ID
-                WHERE u.accessToken = @accessToken;";
-
+            command.CommandText = GetUserSql(GetUserType.AccessToken);
             command.Parameters.AddWithValue("@accessToken", accessToken);
 
             var reader = command.ExecuteReader();
             return CreateFullUserFromRows(reader);
         }
-        
+
         public FullUser GetUserById(long id)
         {
             using var conn = new SqliteConnection(DatabaseHelpers.DatabaseConnectionString);
             conn.Open();
             var command = conn.CreateCommand();
 
-            command.CommandText =
-                @"SELECT 
-	                u.ID, 
+            command.CommandText = GetUserSql(GetUserType.Id);
+            command.Parameters.AddWithValue("@id", id);
+
+            var reader = command.ExecuteReader();
+            return CreateFullUserFromRows(reader);
+        }
+
+        public FullUser GetUserByUsername(string username)
+        {
+            using var conn = new SqliteConnection(DatabaseHelpers.DatabaseConnectionString);
+            conn.Open();
+            var command = conn.CreateCommand();
+
+            command.CommandText = GetUserSql(GetUserType.Username);
+            command.Parameters.AddWithValue("@username", username);
+
+            var reader = command.ExecuteReader();
+            return CreateFullUserFromRows(reader);
+        }
+
+        public UserPasswordModel GetFullPasswordUser(string username)
+        {
+            using var conn = new SqliteConnection(DatabaseHelpers.DatabaseConnectionString);
+            conn.Open();
+            var command = conn.CreateCommand();
+
+            command.CommandText = @"SELECT 
+	                u.Id, 
+	                u.email, 
+	                u.username, 
+	                u.dateCreated,
+	                u.salt,
+                    u.password,
+                    u.accessToken,
+                    u.accessTokenDate
+                FROM User u
+                WHERE u.username = @username;";
+            command.Parameters.AddWithValue("@username", username);
+
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                return new UserPasswordModel
+                {
+                    Id = reader.GetInt32("Id"),
+                    Email = reader.GetString("email"),
+                    Username = reader.GetString("username"),
+                    DateCreated = reader.GetInt64("dateCreated"),
+                    Salt = reader.GetString("salt"),
+                    HashedPassword = reader.GetString("password"),
+                    AccessToken = reader.GetString("accessToken"),
+                    AccessTokenDate = reader.GetInt64("accessTokenDate")
+                };
+            }
+
+            return null;
+
+        }
+
+        private static string GetUserSql(GetUserType type)
+        {
+            var sql = @"SELECT 
+	                u.Id, 
 	                u.email, 
 	                u.username, 
 	                u.dateCreated,
@@ -83,13 +130,16 @@ namespace Services.Repositories
 	                ugr.type AS gameRoleType
                 FROM User u
                 LEFT JOIN UserSiteRole usr ON usr.userId = u.ID
-                LEFT JOIN UserGameRole ugr ON ugr.userId = u.ID
-                WHERE u.ID = @id;";
+                LEFT JOIN UserGameRole ugr ON ugr.userId = u.ID";
+            sql += type switch
+            {
+                GetUserType.AccessToken => "\nWHERE u.accessToken = @accessToken;",
+                GetUserType.Id => "\nWHERE u.ID = @id;",
+                GetUserType.Username => "\nWHERE u.username = @username;",
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
 
-            command.Parameters.AddWithValue("@id", id);
-
-            var reader = command.ExecuteReader();
-            return CreateFullUserFromRows(reader);
+            return sql;
         }
 
         private static FullUser CreateFullUserFromRows(DbDataReader reader)
@@ -137,6 +187,13 @@ namespace Services.Repositories
             }
 
             return fullUser;
+        }
+
+        private enum GetUserType
+        {
+            AccessToken,
+            Id,
+            Username
         }
     }
 }

@@ -30,6 +30,17 @@ namespace Services.User
             return user;
         }
 
+        public string GetAccessToken(string username, string password)
+        {
+            var user = _userRepository.GetFullPasswordUser(username);
+            if (user == null || !PasswordService.VerifyPassword(password, user.HashedPassword, user.Salt))
+            {
+                throw new Exception("Incorrect username and/or password");
+            }
+
+            return user.AccessToken;
+        }
+
         public FullUser GetUserByAccessToken(string accessToken)
         {
             return _userRepository.GetUserByAccessToken(accessToken);
@@ -38,6 +49,11 @@ namespace Services.User
         public FullUser GetUserById(long id)
         {
             return _userRepository.GetUserById(id);
+        }
+
+        public FullUser GetUserByUsername(string username)
+        {
+            return _userRepository.GetUserByUsername(username);
         }
         
         private static string GenerateAccessToken()

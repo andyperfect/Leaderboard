@@ -22,5 +22,11 @@ namespace Services.User
         FullUser GetUserByAccessToken(string accessToken);
 
         FullUser GetUserById(long id);
+
+        FullUser GetUserByUsername(string username);
+
+        UserPasswordModel GetFullPasswordUser(string username);
+
+
     }
 }
