@@ -1,4 +1,5 @@
 ﻿using Services.User.Models;
+using Services.User.Roles;
 
 namespace Services.User
 {
@@ -8,5 +9,6 @@ namespace Services.User
         string GetAccessToken(string username, string password);
         FullUser GetUserByAccessToken(string accessToken);
         FullUser GetUserById(long id);
+        void GiveUserSiteRole(long id, SiteRoleType type);
     }
 }

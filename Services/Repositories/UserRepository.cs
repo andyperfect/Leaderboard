@@ -115,7 +115,22 @@ namespace Services.Repositories
             }
 
             return null;
+        }
 
+        public void AddSiteRoleToUser(long userId, SiteRoleType type)
+        {
+            using var conn = new SqliteConnection(DatabaseHelpers.DatabaseConnectionString);
+
+            conn.Open();
+            var command = conn.CreateCommand();
+
+            command.CommandText =
+                @"INSERT INTO UserSiteRole (userId, type) VALUES (@userId, @type);";
+
+            command.Parameters.AddWithValue("@userId", userId);
+            command.Parameters.AddWithValue("@type", (int) type);
+
+            command.ExecuteNonQuery();
         }
 
         private static string GetUserSql(GetUserType type)

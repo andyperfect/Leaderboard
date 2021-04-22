@@ -1,6 +1,7 @@
 ﻿using System;
 using Services.Password;
 using Services.User.Models;
+using Services.User.Roles;
 using Services.Windsor;
 
 namespace Services.User
@@ -54,6 +55,17 @@ namespace Services.User
         public FullUser GetUserByUsername(string username)
         {
             return _userRepository.GetUserByUsername(username);
+        }
+
+        public void GiveUserSiteRole(long id, SiteRoleType type)
+        {
+            var user = GetUserById(id);
+            if (user == null || user.SiteRoles.Contains(type))
+            {
+                return;
+            }
+
+            _userRepository.AddSiteRoleToUser(id, type);
         }
         
         private static string GenerateAccessToken()

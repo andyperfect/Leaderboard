@@ -1,6 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Services.DatabaseInitialization;
 using Services.Repositories;
 using Services.User;
 
@@ -18,8 +19,16 @@ namespace Services.Windsor.Installers
                     .ImplementedBy<UserService>()
                     .LifestyleSingleton(),
                 Component
-                    .For<IUserRepository, IUserRepository>()
+                    .For<UserRepository, IUserRepository>()
                     .ImplementedBy<UserRepository>()
+                    .LifestyleSingleton(),
+                Component
+                    .For<DatabaseInitializationService, IDatabaseInitializationService>()
+                    .ImplementedBy<DatabaseInitializationService>()
+                    .LifestyleSingleton(),
+                Component
+                    .For<DatabaseInitializationRepository, IDatabaseInitializationRepository>()
+                    .ImplementedBy<DatabaseInitializationRepository>()
                     .LifestyleSingleton(),
             };
 

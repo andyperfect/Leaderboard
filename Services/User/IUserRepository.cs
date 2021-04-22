@@ -1,4 +1,5 @@
 ﻿using Services.User.Models;
+using Services.User.Roles;
 
 namespace Services.User
 {
@@ -26,6 +27,8 @@ namespace Services.User
         FullUser GetUserByUsername(string username);
 
         UserPasswordModel GetFullPasswordUser(string username);
+
+        void AddSiteRoleToUser(long userId, SiteRoleType type);
 
 
     }
