@@ -3,7 +3,9 @@ using Services.DatabaseInitialization;
 
 namespace Services.Repositories
 {
-    public class DatabaseInitializationRepository : IDatabaseInitializationRepository
+    public class DatabaseInitializationRepository :
+        RepositoryBase,
+        IDatabaseInitializationRepository
     {
         public void CreateDatabase()
         {
@@ -11,7 +13,7 @@ namespace Services.Repositories
             conn.Open();
             var command = conn.CreateCommand();
 
-            command.CommandText = DatabaseHelpers.GetSql("Services.EmbeddedResources.Sql.CreateDatabase.sql");
+            command.CommandText = Sql(nameof(CreateDatabase));
             command.ExecuteNonQuery();
         }
     }

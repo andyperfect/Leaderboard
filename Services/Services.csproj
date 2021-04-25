@@ -12,7 +12,16 @@
 
     <ItemGroup>
       <None Remove="EmbeddedResources\Sql\CreateDatabase.sql" />
-      <EmbeddedResource Include="EmbeddedResources\Sql\CreateDatabase.sql" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="EmbeddedResources\Sql\DatabaseInitializationRepository\CreateDatabase.sql" />
+      <None Remove="EmbeddedResources\Sql\UserRepository\AddSiteRoleToUser.sql" />
+      <EmbeddedResource Include="EmbeddedResources\Sql\UserRepository\AddSiteRoleToUser.sql" />
+      <None Remove="EmbeddedResources\Sql\UserRepository\CreateUser.sql" />
+      <EmbeddedResource Include="EmbeddedResources\Sql\UserRepository\CreateUser.sql" />
+      <None Remove="EmbeddedResources\Sql\UserRepository\GetFullPasswordUser.sql" />
+      <EmbeddedResource Include="EmbeddedResources\Sql\UserRepository\GetFullPasswordUser.sql" />
     </ItemGroup>
 
 </Project>

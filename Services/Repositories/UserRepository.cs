@@ -10,7 +10,9 @@ using Services.User.Roles;
 
 namespace Services.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository :
+        RepositoryBase,
+        IUserRepository
     {
         public void CreateUser(
             UserModel user,
@@ -24,10 +26,7 @@ namespace Services.Repositories
             conn.Open();
             var command = conn.CreateCommand();
 
-            command.CommandText =
-                @"INSERT INTO User (email, username, dateCreated, salt, password, accessToken, accessTokenDate)
-                    VALUES (@email, @username, @dateCreated, @salt, @password, @accessToken, @accessTokenDate);
-                    SELECT last_insert_rowid()";
+            command.CommandText = Sql(nameof(CreateUser));
 
             command.Parameters.AddWithValue("@email", user.Email);
             command.Parameters.AddWithValue("@username", user.Username);
@@ -85,17 +84,7 @@ namespace Services.Repositories
             conn.Open();
             var command = conn.CreateCommand();
 
-            command.CommandText = @"SELECT 
-	                u.Id, 
-	                u.email, 
-	                u.username, 
-	                u.dateCreated,
-	                u.salt,
-                    u.password,
-                    u.accessToken,
-                    u.accessTokenDate
-                FROM User u
-                WHERE u.username = @username;";
+            command.CommandText = Sql(nameof(GetFullPasswordUser));
             command.Parameters.AddWithValue("@username", username);
 
             var reader = command.ExecuteReader();
@@ -124,8 +113,7 @@ namespace Services.Repositories
             conn.Open();
             var command = conn.CreateCommand();
 
-            command.CommandText =
-                @"INSERT INTO UserSiteRole (userId, type) VALUES (@userId, @type);";
+            command.CommandText = Sql(nameof(AddSiteRoleToUser));
 
             command.Parameters.AddWithValue("@userId", userId);
             command.Parameters.AddWithValue("@type", (int) type);
