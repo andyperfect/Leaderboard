@@ -9,9 +9,9 @@ namespace Services.User
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService()
+        public UserService(IUserRepository userRepository)
         {
-            _userRepository = IoC.Container.Resolve<IUserRepository>();
+            _userRepository = userRepository;
         }
         
         public UserModel CreateUser(string email, string username, string password)

@@ -27,14 +27,14 @@ namespace API.Controllers.User
             return new OkObjectResult(user);
         }
 
-        [HttpGet, Route("{id}")]
+        [HttpGet, Route("{id:long}")]
         public ActionResult Get(long id)
         {
             var user = _userService.GetUserById(id);
             return new OkObjectResult(user);
         }
 
-        [HttpPost, Route("{login}")]
+        [HttpPost, Route("login")]
         public ActionResult Login([FromBody] LoginModel model)
         {
             var accessToken = _userService.GetAccessToken(model.Username, model.Password);
