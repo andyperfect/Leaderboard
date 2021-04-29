@@ -10,7 +10,7 @@
                         PRIMARY KEY("Id" AUTOINCREMENT)
 );
 
-CREATE TABLE "Game" (
+CREATE TABLE "Leaderboard" (
                         "Id"	INTEGER,
                         "title"	TEXT NOT NULL,
                         "releaseDate"	TEXT NOT NULL,
@@ -20,18 +20,18 @@ CREATE TABLE "Game" (
                         FOREIGN KEY("addedBy") REFERENCES "User"("Id") ON DELETE SET NULL
 );
 
-CREATE TABLE "GameCategory" (
+CREATE TABLE "LeaderboardCategory" (
                                 "Id"	INTEGER,
-                                "gameId"	INTEGER NOT NULL,
+                                "leaderboardId"	INTEGER NOT NULL,
                                 "name"	TEXT NOT NULL,
                                 "rules"	TEXT,
-                                FOREIGN KEY("gameId") REFERENCES "Game"("Id") ON DELETE CASCADE,
+                                FOREIGN KEY("leaderboardId") REFERENCES "Leaderboard"("Id") ON DELETE CASCADE,
                                 PRIMARY KEY("Id" AUTOINCREMENT)
 );
 
-CREATE TABLE "GameCategoryVariable" (
+CREATE TABLE "LeaderboardCategoryVariable" (
                                         "Id"	INTEGER,
-                                        "gameCategoryId"	INTEGER NOT NULL,
+                                        "leaderboardCategoryId"	INTEGER NOT NULL,
                                         "dataType"	INTEGER NOT NULL,
                                         "displayType"	INTEGER NOT NULL,
                                         "name"	TEXT NOT NULL,
@@ -41,12 +41,12 @@ CREATE TABLE "GameCategoryVariable" (
 
 CREATE TABLE "Submission" (
                               "Id"	INTEGER,
-                              "gameId"	INTEGER NOT NULL,
+                              "leaderboardId"	INTEGER NOT NULL,
                               "userId"	INTEGER NOT NULL,
                               "dateCreated"	INTEGER NOT NULL,
                               "dateOfSubmission"	INTEGER NOT NULL,
                               "status"	INTEGER NOT NULL,
-                              FOREIGN KEY("gameId") REFERENCES "Game"("Id") ON DELETE CASCADE,
+                              FOREIGN KEY("leaderboardId") REFERENCES "Leaderboard"("Id") ON DELETE CASCADE,
                               FOREIGN KEY("userId") REFERENCES "User"("Id") ON DELETE CASCADE,
                               PRIMARY KEY("Id" AUTOINCREMENT)
 );
@@ -54,19 +54,19 @@ CREATE TABLE "Submission" (
 CREATE TABLE "SubmissionVariable" (
                                       "Id"	INTEGER,
                                       "submissionId"	INTEGER NOT NULL,
-                                      "gameCategoryVariableId"	INTEGER NOT NULL,
+                                      "leaderboardCategoryVariableId"	INTEGER NOT NULL,
                                       "value"	TEXT,
                                       FOREIGN KEY("submissionId") REFERENCES "Submission"("Id") ON DELETE CASCADE,
-                                      FOREIGN KEY("gameCategoryVariableId") REFERENCES "GameCategoryVariable"("Id") ON DELETE CASCADE,
+                                      FOREIGN KEY("leaderboardCategoryVariableId") REFERENCES "LeaderboardCategoryVariable"("Id") ON DELETE CASCADE,
                                       PRIMARY KEY("Id" AUTOINCREMENT)
 );
 
-CREATE TABLE "UserGameRole" (
+CREATE TABLE "UserLeaderboardRole" (
                                 "Id"	INTEGER,
                                 "userId"	INTEGER NOT NULL,
-                                "gameId"	INTEGER NOT NULL,
+                                "leaderboardId"	INTEGER NOT NULL,
                                 "type"	INTEGER NOT NULL,
-                                FOREIGN KEY("gameId") REFERENCES "Game"("Id") ON DELETE CASCADE,
+                                FOREIGN KEY("leaderboardId") REFERENCES "Leaderboard"("Id") ON DELETE CASCADE,
                                 FOREIGN KEY("userId") REFERENCES "User"("Id") ON DELETE CASCADE,
                                 PRIMARY KEY("Id" AUTOINCREMENT)
 );

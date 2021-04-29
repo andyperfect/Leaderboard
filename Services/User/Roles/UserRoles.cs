@@ -7,10 +7,10 @@ namespace Services.User.Roles
         public UserRoles()
         {
             SiteRoles = new List<SiteRoleType>();
-            GameRoles = new List<GameRole>();
+            LeaderboardRoles = new List<LeaderboardRole>();
         }
 
         public IEnumerable<SiteRoleType> SiteRoles { get; set; }
-        public IEnumerable<GameRole> GameRoles { get; set; }
+        public IEnumerable<LeaderboardRole> LeaderboardRoles { get; set; }
     }
 }

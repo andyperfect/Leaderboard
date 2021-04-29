@@ -1,6 +1,6 @@
 ﻿namespace Services.User.Roles
 {
-    public enum GameRoleType
+    public enum LeaderboardRoleType
     {
         Moderator = 1,
         Verifier = 2

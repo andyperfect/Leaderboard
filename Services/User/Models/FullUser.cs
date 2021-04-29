@@ -8,11 +8,11 @@ namespace Services.User.Models
         public FullUser()
         {
             SiteRoles = new List<SiteRoleType>();
-            GameRoles = new List<GameRole>();
+            LeaderboardRoles = new List<LeaderboardRole>();
         }
 
         public UserModel User { get; set; }
         public List<SiteRoleType> SiteRoles { get; set; }
-        public List<GameRole> GameRoles { get; set; }
+        public List<LeaderboardRole> LeaderboardRoles { get; set; }
     }
 }

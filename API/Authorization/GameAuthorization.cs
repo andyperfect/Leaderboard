@@ -1,6 +1,6 @@
 ﻿namespace API.Authorization
 {
-    public static class GameAuthorization
+    public static class LeaderboardAuthorization
     {
         
     }

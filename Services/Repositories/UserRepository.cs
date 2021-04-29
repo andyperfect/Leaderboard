@@ -129,11 +129,11 @@ namespace Services.Repositories
 	                u.username, 
 	                u.dateCreated,
 	                usr.type AS siteRoleType,
-	                ugr.gameId AS gameRoleGameId,
-	                ugr.type AS gameRoleType
+	                ugr.leaderboardId AS leaderboardId,
+	                ugr.type AS leaderboardRoleType
                 FROM User u
                 LEFT JOIN UserSiteRole usr ON usr.userId = u.ID
-                LEFT JOIN UserGameRole ugr ON ugr.userId = u.ID";
+                LEFT JOIN UserLeaderboardRole ugr ON ugr.userId = u.ID";
             sql += type switch
             {
                 GetUserType.AccessToken => "\nWHERE u.accessToken = @accessToken;",
@@ -167,23 +167,23 @@ namespace Services.Repositories
                     fullUser.SiteRoles.Add((SiteRoleType) reader.GetInt32("siteRoleType"));
                 }
 
-                if (!reader.IsDBNull("gameRoleGameId"))
+                if (!reader.IsDBNull("leaderboardId"))
                 {
-                    var currentGameRole =
-                        fullUser.GameRoles.FirstOrDefault(x => x.GameId == reader.GetInt32("gameRoleGameId"));
-                    if (currentGameRole == null)
+                    var currentLeaderboardRole =
+                        fullUser.LeaderboardRoles.FirstOrDefault(x => x.LeaderboardId == reader.GetInt32("leaderboardId"));
+                    if (currentLeaderboardRole == null)
                     {
-                        fullUser.GameRoles.Add(new GameRole
+                        fullUser.LeaderboardRoles.Add(new LeaderboardRole
                         {
-                            GameId = reader.GetInt32("gameRoleGameId"),
-                            Roles = new List<GameRoleType> {(GameRoleType) reader.GetInt32("gameRoleType")}
+                            LeaderboardId = reader.GetInt32("leaderboardId"),
+                            Roles = new List<LeaderboardRoleType> {(LeaderboardRoleType) reader.GetInt32("leaderboardRoleType")}
                         });
                     }
                     else
                     {
-                        if (!currentGameRole.Roles.Contains((GameRoleType) reader.GetInt32("gameRoleType")))
+                        if (!currentLeaderboardRole.Roles.Contains((LeaderboardRoleType) reader.GetInt32("leaderboardRoleType")))
                         {
-                            currentGameRole.Roles.Add((GameRoleType) reader.GetInt32("gameRoleType"));
+                            currentLeaderboardRole.Roles.Add((LeaderboardRoleType) reader.GetInt32("leaderboardRoleType"));
                         }
                     }
                 }
