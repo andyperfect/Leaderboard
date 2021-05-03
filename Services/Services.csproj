@@ -24,6 +24,8 @@
       <EmbeddedResource Include="EmbeddedResources\Sql\UserRepository\GetFullPasswordUser.sql" />
       <None Remove="EmbeddedResources\Sql\LeaderboardRepository\Create.sql" />
       <EmbeddedResource Include="EmbeddedResources\Sql\LeaderboardRepository\Create.sql" />
+      <None Remove="EmbeddedResources\Sql\LeaderboardRepository\GetAll.sql" />
+      <EmbeddedResource Include="EmbeddedResources\Sql\LeaderboardRepository\Get.sql" />
     </ItemGroup>
 
 </Project>

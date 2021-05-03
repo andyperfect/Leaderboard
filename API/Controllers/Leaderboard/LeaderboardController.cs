@@ -26,5 +26,17 @@ namespace API.Controllers.Leaderboard
             var leaderboard = _leaderboardService.Create(model.Title, actor);
             return new OkObjectResult(leaderboard);
         }
+
+        [HttpGet, Route("{id:long}")]
+        public ActionResult Get(long id)
+        {
+            var leaderboard = _leaderboardService.Get(id);
+            if (leaderboard == null)
+            {
+                return new NotFoundResult();
+            }
+
+            return new OkObjectResult(leaderboard);
+        }
     }
 }

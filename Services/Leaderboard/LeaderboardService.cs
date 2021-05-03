@@ -27,7 +27,7 @@ namespace Services.Leaderboard
 
         public LeaderboardModel Get(long id)
         {
-            throw new System.NotImplementedException();
+            return _leaderboardRepository.Get(id);
         }
     }
 }
