@@ -1,6 +1,6 @@
 ﻿namespace API.Controllers.Leaderboard.Models
 {
-    public class CreateModel
+    public class LeaderboardCreateModel
     {
         public string Title { get; set; }
     }

@@ -7,5 +7,6 @@ namespace Services.Leaderboard
     {
         public void Create(LeaderboardModel leaderboard);
         LeaderboardModel Get(long id);
+        bool UpdateTitle(long id, string title);
     }
 }

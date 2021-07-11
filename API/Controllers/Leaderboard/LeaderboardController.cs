@@ -20,7 +20,7 @@ namespace API.Controllers.Leaderboard
         }
 
         [HttpPost, Route("")]
-        public ActionResult Create([FromBody] CreateModel model)
+        public ActionResult Create([FromBody] LeaderboardCreateModel model)
         {
             var actor = Request.AuthorizeSiteAdministrator();
             var leaderboard = _leaderboardService.Create(model.Title, actor);
@@ -36,6 +36,14 @@ namespace API.Controllers.Leaderboard
                 return new NotFoundResult();
             }
 
+            return new OkObjectResult(leaderboard);
+        }
+
+        [HttpPut, Route("{id:long}")]
+        public ActionResult Update(long id, [FromBody] LeaderboardUpdateModel model)
+        {
+            var actor = Request.AuthorizeLeaderboardEdit(id);
+            var leaderboard = _leaderboardService.UpdateTitle(id, model.Title);
             return new OkObjectResult(leaderboard);
         }
     }

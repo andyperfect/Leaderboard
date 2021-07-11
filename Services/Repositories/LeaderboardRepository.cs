@@ -34,6 +34,15 @@ namespace Services.Repositories
             return reader.Read() ? CreateModelFromReader(reader) : null;
         }
 
+        public bool UpdateTitle(long id, string title)
+        {
+            using var conn = new SqliteConnection(DatabaseHelpers.DatabaseConnectionString);
+            var command = OpenConnWithSql(conn, nameof(UpdateTitle));
+            command.Parameters.AddWithValue("@id", id);
+            command.Parameters.AddWithValue("@title", title);
+            return command.ExecuteNonQuery() > 0;
+        }
+
         private static LeaderboardModel CreateModelFromReader(DbDataReader reader)
         {
             return new LeaderboardModel

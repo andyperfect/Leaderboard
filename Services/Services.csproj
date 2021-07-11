@@ -26,6 +26,8 @@
       <EmbeddedResource Include="EmbeddedResources\Sql\LeaderboardRepository\Create.sql" />
       <None Remove="EmbeddedResources\Sql\LeaderboardRepository\GetAll.sql" />
       <EmbeddedResource Include="EmbeddedResources\Sql\LeaderboardRepository\Get.sql" />
+      <None Remove="EmbeddedResources\Sql\LeaderboardRepository\UpdateTitle.sql" />
+      <EmbeddedResource Include="EmbeddedResources\Sql\LeaderboardRepository\UpdateTitle.sql" />
     </ItemGroup>
 
 </Project>

@@ -29,5 +29,15 @@ namespace Services.Leaderboard
         {
             return _leaderboardRepository.Get(id);
         }
+
+        public LeaderboardModel UpdateTitle(long id, string title)
+        {
+            var success = _leaderboardRepository.UpdateTitle(id, title);
+            if (!success)
+            {
+                throw new Exception($"Leaderboard id {id} not found");
+            }
+            return Get(id);
+        }
     }
 }

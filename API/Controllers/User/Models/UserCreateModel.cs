@@ -1,6 +1,6 @@
 ﻿namespace API.Controllers.User.Models
 {
-    public class CreateModel
+    public class UserCreateModel
     {
         public string Email { get; set; }
         public string Password { get; set; }

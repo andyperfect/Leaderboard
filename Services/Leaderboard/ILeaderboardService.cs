@@ -7,5 +7,6 @@ namespace Services.Leaderboard
     {
         public LeaderboardModel Create(string title, FullUser actor);
         public LeaderboardModel Get(long id);
+        public LeaderboardModel UpdateTitle(long id, string title);
     }
 }
